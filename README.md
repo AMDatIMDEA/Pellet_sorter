@@ -1,4 +1,4 @@
-# Pellet_sorter
+# Pellet Sorter
 CAD and Arduino/Python code files for the pellet sorter/collector robot
 
 ## Useful links
