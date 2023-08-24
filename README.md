@@ -27,4 +27,4 @@ CAD and Arduino/Python code files for the pellet sorter/collector robot
 ### ⚖ Balance
 - [ ] [CPWplus Scale datasheet](https://github.com/AMDatIMDEA/Pellet_sorter/blob/d0cadbf57e2ab080da146999fbca15fec0f52def/Resources/Guides_and_Datasheets/CPWplus_UM_USA%20Scale.pdf)
 
-![Pellet sorter rendering](Resources/Visuals/Pellet_sorter_Assembly_view_Full.png)
+![Pellet sorter rendering](Resources/Visuals/Renders/Pellet_sorter_Assembly_view_Full.png)
