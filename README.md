@@ -1,16 +1,30 @@
 # Pellet Sorter
 CAD and Arduino/Python code files for the pellet sorter/collector robot
 
-## Useful links
-### Stepper Motors
+⚠ All parts are designed to be printed according to the specified [Cura settings](Resources/Ultimaker_S5_Cura_Config.curaprofile). These include:
+- Horizontal Expansion: -0.1 mm
+- Initial Layer Horizontal Expansion: -0.16 mm
+
+
+## Useful links 
+### ⚡ Stepper Motors
 - [Arduino AccelStepper Class Reference](https://www.airspayce.com/mikem/arduino/AccelStepper/classAccelStepper.html)
 - [Arduino AccelStepper Examples](https://www.airspayce.com/mikem/arduino/AccelStepper/examples.html)
 - [A4988 Driver simplified guide](https://lastminuteengineers.com/a4988-stepper-motor-driver-arduino-tutorial/)
+- [ ] [Small stepper datasheet](https://github.com/AMDatIMDEA/Pellet_sorter/blob/d0cadbf57e2ab080da146999fbca15fec0f52def/Resources/Guides_and_Datasheets/290-028-1_ts-24byj48a-25-pxw%20Stepper.pdf)
+- [ ] [SX-NEMA17 Stepper datasheet](https://github.com/AMDatIMDEA/Pellet_sorter/blob/d0cadbf57e2ab080da146999fbca15fec0f52def/Resources/Guides_and_Datasheets/SX17%20NEMA17%20Stepper.pdf)
+- [ ] [a4998 Driver datasheet](https://github.com/AMDatIMDEA/Pellet_sorter/blob/d0cadbf57e2ab080da146999fbca15fec0f52def/Resources/Guides_and_Datasheets/A4988-%20Driver%20Datasheet.pdf)
 
-### Serial port
+
+### 🔌 Serial port
 - [Arduino Serial functions](https://www.arduino.cc/reference/en/language/functions/communication/serial/)
 - [Python pySerial API Classes](https://pyserial.readthedocs.io/en/latest/pyserial_api.html)
 
-### Inverse Kinematics
+### ⛓ Inverse Kinematics
 - [IKPy GitHub Repo](https://github.com/Phylliade/ikpy)
 - [IKPy Documentation](https://ikpy.readthedocs.io/en/latest/ikpy.html)
+
+### ⚖ Balance
+- [ ] [CPWplus Scale datasheet](https://github.com/AMDatIMDEA/Pellet_sorter/blob/d0cadbf57e2ab080da146999fbca15fec0f52def/Resources/Guides_and_Datasheets/CPWplus_UM_USA%20Scale.pdf)
+
+![Pellet sorter rendering](Resources/Visuals/Pellet_sorter_Assembly_view_Full.png)
