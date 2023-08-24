@@ -13,7 +13,7 @@ CAD and Arduino/Python code files for the pellet sorter/collector robot
 - [A4988 Driver simplified guide](https://lastminuteengineers.com/a4988-stepper-motor-driver-arduino-tutorial/)
 - [ ] [Small stepper datasheet](https://github.com/AMDatIMDEA/Pellet_sorter/blob/d0cadbf57e2ab080da146999fbca15fec0f52def/Resources/Guides_and_Datasheets/290-028-1_ts-24byj48a-25-pxw%20Stepper.pdf)
 - [ ] [SX-NEMA17 Stepper datasheet](https://github.com/AMDatIMDEA/Pellet_sorter/blob/d0cadbf57e2ab080da146999fbca15fec0f52def/Resources/Guides_and_Datasheets/SX17%20NEMA17%20Stepper.pdf)
-- [ ] [a4998 Driver datasheet](https://github.com/AMDatIMDEA/Pellet_sorter/blob/d0cadbf57e2ab080da146999fbca15fec0f52def/Resources/Guides_and_Datasheets/A4988-%20Driver%20Datasheet.pdf)
+- [ ] [A4998 Driver datasheet](https://github.com/AMDatIMDEA/Pellet_sorter/blob/d0cadbf57e2ab080da146999fbca15fec0f52def/Resources/Guides_and_Datasheets/A4988-%20Driver%20Datasheet.pdf)
 
 
 ### 🔌 Serial port
