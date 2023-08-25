@@ -48,6 +48,8 @@ And some smaller TO-DOs:
 - Implementing tray swapping into the script, so that after operation it holds the valve closed in the initial position while a human/robot picks up the full tray and swaps in a new, empty one. This could be done either with a simple user input through consol, which would replace restarting the script, or even in a more automatic fashion by using the scale to detect negative weight when the tray has been taken out, then waiting for a slight increase corresponding to the new empty tray being placed.
 - ...
 
+[Back to top](#TOP)
+
 ## Useful links & references
 ### ⚡ Stepper Motors
 - [Arduino AccelStepper Class Reference](https://www.airspayce.com/mikem/arduino/AccelStepper/classAccelStepper.html)
@@ -56,7 +58,6 @@ And some smaller TO-DOs:
 - [ ] [Small stepper datasheet](https://github.com/AMDatIMDEA/Pellet_sorter/blob/d0cadbf57e2ab080da146999fbca15fec0f52def/Resources/Guides_and_Datasheets/290-028-1_ts-24byj48a-25-pxw%20Stepper.pdf)
 - [ ] [SX-NEMA17 Stepper datasheet](https://github.com/AMDatIMDEA/Pellet_sorter/blob/d0cadbf57e2ab080da146999fbca15fec0f52def/Resources/Guides_and_Datasheets/SX17%20NEMA17%20Stepper.pdf)
 - [ ] [A4998 Driver datasheet](https://github.com/AMDatIMDEA/Pellet_sorter/blob/d0cadbf57e2ab080da146999fbca15fec0f52def/Resources/Guides_and_Datasheets/A4988-%20Driver%20Datasheet.pdf)
-
 
 ### 🔌 Serial port
 - [Arduino Serial functions](https://www.arduino.cc/reference/en/language/functions/communication/serial/)
