@@ -8,11 +8,11 @@ CAD and Arduino/Python code files for the pellet sorter/collector robot
 
 ## Introduction to the project & current state
 The pellet sorter robot is a double-jointed articulated tube designed for pellets to be distributed into a set of cups on a tray, with the aim of automating the output of the material production process:
-> Mixing of desired composition -> Extrusion -> Cooling -> Pelletizing -> **SORTING** -> Transport to sample manufacture & experimentation
+> Mixing of desired composition 🠚 Extrusion 🠚 Cooling 🠚 Pelletizing 🠚 **SORTING** ⇨ Transport to sample manufacture & experimentation
 
 The parts, designed in FreeCAD, are made mostly of PLA by 3D printing, together short PVC pipe sections, and nuts and bolts for fastening. The robot uses two stepper motors for positioning, one on its base and another closer to the end of the arm, allowing it to effectively sweep a truncated circular sector below the pelletizer that covers the entire area of a tray. A third stepper actuates the opening and closing of a butterfly valve.  The whole assembly is suspended beneath the pelletizer by two arms on the top funnel/hopper, inserted into aluminum railings just under where the pellets exit. These make their way through the first joint, the valve (if open), and through the second joint, before reaching the nozzle and dropping into a cup or being discarded. The tray holding the cups is set up on a scale, which enables the control of fill levels of cups, as well as determining the material yield.
 
-The motors are controled by A4998 drivers and an Arduino Uno R3 board, which is in turn managed by a Python script on a computer. The communication between these is established through a serial protocol, hence the Arduino must be plugged in by USB during operation, in addition to the power cable for the motors. The scale is also connected by its own serial port to the script. This Python code makes use of the Inverse Kinematics Python library (IKPy), through which the number of steps that each motor needs to take can be calculated in order for the robot to move its nozzle to a desired position. This versatility in the code, together with the fact that the arm should be able to reach any point within the swept region defined above, implies that the design is theoretically adaptable to any tray and cup arrangement, as long as these fit within said area.
+The motors are controled by A4988 drivers and an Arduino Uno R3 board, which is in turn managed by a Python script on a computer. The communication between these is established through a serial protocol, hence the Arduino must be plugged in by USB during operation, in addition to the power cable for the motors. The scale is also connected by its own serial port to the script. This Python code makes use of the Inverse Kinematics Python library (IKPy), through which the number of steps that each motor needs to take can be calculated in order for the robot to move its nozzle to a desired position. This versatility in the code, together with the fact that the arm should be able to reach any point within the swept region defined above, implies that the design is theoretically adaptable to any tray and cup arrangement, as long as these fit within said area.
 
 The way the current script works is the following: Firstly, the robot arm must be pointing completely straight and perpendicular to the face of the pelletizer, and the current 9-hole square tray, whose center is alligned with the axis of rotation of the bottom joint, is set up on the scale. Then, the scale is zeroed, the arm rotates to the first cup's coordinates, opens the valve and lets pellets through. Once the predetermined weight capacity of each cup is reached, as measured on the scale, the script knows to close the valve and move on to the next cup. It does this rotating through all 8 external cups, then finally goeas to the center cup. Once this one has been filled it returns to the initial position.
 
@@ -44,11 +44,12 @@ In light of these hurdles, and keeping the ambitions of the whole RobotLab in mi
   - Vissual feedback on the robot arm's pose, which eliminates missmatch issues between the real pose and the ideal one.
 - Creating a database that, interacting with the script, can cataloge the available trays, those in storage; the contents, fill level,s and properties of every cup, etc. This would be necessity if there ever is the desire to scale production, and would be useful for the transport system to interact with.
 
-And some smaller TO-DOs:
+And some less impactful TO-DOs:
 - Implementing tray swapping into the script, so that after operation it holds the valve closed in the initial position while a human/robot picks up the full tray and swaps in a new, empty one. This could be done either with a simple user input through consol, which would replace restarting the script, or even in a more automatic fashion by using the scale to detect negative weight when the tray has been taken out, then waiting for a slight increase corresponding to the new empty tray being placed.
+- Vertically integrating the script upwards with an overarching material production control script, that manages the mixing, extrusion and pelletizing. This would not be too difficult given how the robot operation is built on a functional basis, and the management of cups and trays is object-oriented. 
 - ...
 
-[Back to top](#TOP)
+[> Back to top](#TOP)
 
 ## Useful links & references
 ### ⚡ Stepper Motors
@@ -76,4 +77,4 @@ And some smaller TO-DOs:
 
 ![Pellet sorter rendering](Resources/Visuals/Renders/Pellet_sorter_Feature.png)
 
-[Back to top](#TOP)
+[> Back to top](#TOP)
