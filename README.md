@@ -5,8 +5,7 @@ CAD and Arduino/Python code files for the pellet sorter/collector robot
 - Horizontal Expansion: -0.1 mm
 - Initial Layer Horizontal Expansion: -0.16 mm
 
-
-## Useful links 
+## Useful links & references
 ### ⚡ Stepper Motors
 - [Arduino AccelStepper Class Reference](https://www.airspayce.com/mikem/arduino/AccelStepper/classAccelStepper.html)
 - [Arduino AccelStepper Examples](https://www.airspayce.com/mikem/arduino/AccelStepper/examples.html)
@@ -31,6 +30,6 @@ CAD and Arduino/Python code files for the pellet sorter/collector robot
 - [TurtleBot 4 GitHub Hardware repo](https://github.com/turtlebot/turtlebot4-hardware/tree/master/TurtleBot%204/Components)
 - [ ] [TurtleBot 4 Integration Platform datasheet](https://github.com/AMDatIMDEA/Pellet_sorter/blob/c34230bc0438fd95317bfee5fad6f5a7074d98d1/Resources/Guides_and_Datasheets/TurtleBot%20Top%20Integration%20platform%20draft.pdf)
 
-![Pellet sorter rendering](Resources/Visuals/Renders/Pellet_sorter_Assembly_view_Full.png)
+![Pellet sorter rendering](Resources/Visuals/Renders/Pellet_sorter_Feature.png)
 
 [Back to top](#TOP)
