@@ -52,7 +52,7 @@ And some less impactful TO-DOs:
 
 ## Useful links & references
 
-- [ ] [Arduino & Breadboard wiring diagram](https://github.com/AMDatIMDEA/Pellet_sorter/blob/ac41d5056acf8f4b9f3374c817f966836518a35a/Schematics/Electronics/Pellet%20Sorter%20Arduino%20and%20Driver%20Wiring%20Drawing%20Final%20Annotated.png)
+- [ ] [Arduino & Breadboard wiring diagram](https://github.com/AMDatIMDEA/Pellet_sorter/blob/3199d7dc5ab3ea5f197367ed4c28cb93c2f82943/Schematics/Electronics/Pellet%20Sorter%20Arduino%20and%20Driver%20Wiring%20Drawing%20Final%20Annotated.png)
 
 ### ⚡ Stepper Motors
 - [Arduino AccelStepper Class Reference](https://www.airspayce.com/mikem/arduino/AccelStepper/classAccelStepper.html)
