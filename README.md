@@ -27,7 +27,7 @@ However, the following are addressed dynamicaly, and therefore would require no 
 - Path to take in between coordinates
 - Operation of the valve
 - Operation of the scale
-- ...
+- The Arduino code as a whole
 
 
 ## Current issues and future development
@@ -46,12 +46,14 @@ In light of these hurdles, and keeping the ambitions of the whole RobotLab in mi
 
 And some less impactful TO-DOs:
 - Implementing tray swapping into the script, so that after operation it holds the valve closed in the initial position while a human/robot picks up the full tray and swaps in a new, empty one. This could be done either with a simple user input through consol, which would replace restarting the script, or even in a more automatic fashion by using the scale to detect negative weight when the tray has been taken out, then waiting for a slight increase corresponding to the new empty tray being placed.
-- Vertically integrating the script upwards with an overarching material production control script, that manages the mixing, extrusion and pelletizing. This would not be too difficult given how the robot operation is built on a functional basis, and the management of cups and trays is object-oriented. 
-- ...
+- Vertically integrating the script upwards with an overarching material production control script, that manages the mixing, extrusion and pelletizing. This would not be too difficult given how the robot operation is built on a functional basis, and the management of cups and trays is object-oriented.
 
 [> Back to top](#TOP)
 
 ## Useful links & references
+
+- [ ] [Arduino & Breadboard wiring diagram](https://github.com/AMDatIMDEA/Pellet_sorter/blob/ac41d5056acf8f4b9f3374c817f966836518a35a/Schematics/Electronics/Pellet%20Sorter%20Arduino%20and%20Driver%20Wiring%20Drawing%20Final%20Annotated.png)
+
 ### ⚡ Stepper Motors
 - [Arduino AccelStepper Class Reference](https://www.airspayce.com/mikem/arduino/AccelStepper/classAccelStepper.html)
 - [Arduino AccelStepper Examples](https://www.airspayce.com/mikem/arduino/AccelStepper/examples.html)
