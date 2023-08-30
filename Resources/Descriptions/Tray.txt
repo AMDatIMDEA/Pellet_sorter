@@ -1,0 +1,3 @@
+Tray:
+
+The current tray design, developed with FreeCAD, is made out of 3D printed PLA, with dimensions of 232x232x123 mm. Using a square planform base with L-section legs on its corners, it features 9 slots, in which standard laboratory cups of about 55mm diameter and 113mm height can be placed, giving it a total capacity of over 1.5kg. It is designed with both human and robot users in mind, thus 4 indented grip surfaces are located on top around the central slot, where a robotic arm can take hold of the entire tray in a stable fashion. Furthermore, the trays are stackable up to multiple layers, since they feature notches where the L-section legs can be inserted, such that the stack is structurally supported and stable.
