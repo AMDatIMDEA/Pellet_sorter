@@ -1,7 +1,7 @@
 # Pellet Sorter
 CAD and Arduino/Python code files for the pellet sorter/collector robot
 
-A tutorial for using the code is available as a [Notebook](Pellet_sorter/Code/Python/Pellet_sorter_py/Example_using_pellet_sorter.ipynb)
+A tutorial for using the code is available as a [Notebook](Code/Python/Pellet_sorter_py/Example_using_pellet_sorter.ipynb)
 
 ⚠ All parts are designed to be printed, if possible, according to the specified [Cura settings](Resources/Ultimaker_S5_Cura_Config.curaprofile). These include:
 - Horizontal Expansion: -0.1 mm
