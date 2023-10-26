@@ -171,6 +171,7 @@ def IK_plot(cartesian_target, cartesian_initial, sorter_parameters, sorter_chain
     plt.xlim(-max_length, max_length)
     plt.ylim(-max_length, max_length)
     plt.legend()
+    plt.show()
 
 
 
@@ -345,21 +346,42 @@ class TrayManager:
 
 
 ### Script definition
-def fill_tray(tray, cartesian_initial, sorter_parameters, sorter_chain, arduino, balance, purge_slot = None):
+def fill_tray(tray, sorter_parameters, arduino, balance, seq = None, purge_slot = None, purge_time = 0):
+    """
+    Function to fill the cups in the tray with the ammount of material previously defined. 
+    
+    :param tray: Object with the information about the tray and its cups
+    :param sorter_parameters: Object with information about the arm
+    :param arduino: serial connection to arduino
+    :param balance: serial connection to balance
+    :param seq: List with the order of filling of the cups. If None, they will all be filled in default order
+    :param purge_slot: Number of the slot used for purging. This slot can be left without cup so the material is
+                        discarded. Used when changing material. If None, no purging will be done.
+    :param purge_time: Time for purge in minutes. Default: 0
+    
+    """
     # Assumes valve starts closed
+    cartesian_initial = [sum([sorter_parameters[n].get('length_mm') for n in range(len(sorter_parameters))]), 0]
     cartesian_prev = cartesian_initial
     #global sorter_parameters
     #global sorter_chain
+    
+    sorter_chain = ps.sorter_chain_update(sorter_parameters)
 
     # Bound is overridden for Inverse Kinematics to prioritize bottom joint over top joint rotation
     bound_rad_initial = sorter_parameters[0]['bound_rad']
     sorter_parameters[0]['bound_rad'] = np.deg2rad(0.1)
-
     sorter_chain = sorter_chain_update(sorter_parameters)
-    for slot_number in range(len(tray.slots)):
+    
+    if seq is None:
+        sequence = range(len(tray.slots))
+    else:
+        sequence = seq
+    
+    for slot_number in sequence:
         if tray.slots_occupied()[slot_number]:  # TODO: Add check for cup not being full & matching materials
             tareBalance(balance)
-            print("FILLING CUP ", slot_number)
+            
 
             if slot_number == 8:
                 sorter_parameters[0]['bound_rad'] = bound_rad_initial
@@ -371,12 +393,17 @@ def fill_tray(tray, cartesian_initial, sorter_parameters, sorter_chain, arduino,
             runValve(True, arduino)
             waitForSerialStr("val finished", arduino)
             # print('Waiting for Balance')
-            waitUntilWeight(tray.slots[slot_number].cup.capacity_kg, balance)
+            if slot_number == purge_slot:
+                print("PURGING.......................................................................")
+                time.sleep(purge_time*60)
+            else:
+                print("FILLING CUP ", slot_number)
+                waitUntilWeight(tray.slots[slot_number].cup.capacity_kg, balance)
             runValve(False, arduino)
             waitForSerialStr("val finished", arduino)
             cartesian_prev = tray.get_slot_cartesian(slot_number)
             
-            if purge_slot is not None:
+            if purge_slot is not None and seq is None:
                 IK_plot(tray.get_slot_cartesian(purge_slot), cartesian_prev, sorter_parameters, sorter_chain)
                 goToCartesianFrom(tray.get_slot_cartesian(purge_slot), cartesian_prev, sorter_parameters, sorter_chain, arduino)
                 waitForSerialStr("pos finished", arduino)
@@ -385,7 +412,7 @@ def fill_tray(tray, cartesian_initial, sorter_parameters, sorter_chain, arduino,
                 # print('Waiting for Balance')
                 #waitUntilWeight(tray.slots[slot_number].cup.capacity_kg, balance)
                 print("PURGING.......................................................................")
-                time.sleep(10)
+                time.sleep(purge_time*60)
                 runValve(False, arduino)
                 waitForSerialStr("val finished", arduino)
                 cartesian_prev = tray.get_slot_cartesian(purge_slot)
@@ -395,23 +422,50 @@ def fill_tray(tray, cartesian_initial, sorter_parameters, sorter_chain, arduino,
     waitForSerialStr("pos finished", arduino)
 
 
-def fill_tray_SIMULATED(tray, cartesian_initial, sorter_parameters, sorter_chain, purge_slot = None):
+def fill_tray_SIMULATED(tray, sorter_parameters, seq = None, purge_slot = None, purge_time = 0):
+    
     # Assumes valve starts closed
+    cartesian_initial = [sum([sorter_parameters[n].get('length_mm') for n in range(len(sorter_parameters))]), 0]
     cartesian_prev = cartesian_initial
     #global sorter_parameters
     #global sorter_chain
+    
+    sorter_chain = sorter_chain_update(sorter_parameters)
+
+    # Bound is overridden for Inverse Kinematics to prioritize bottom joint over top joint rotation
     bound_rad_initial = sorter_parameters[0]['bound_rad']
     sorter_parameters[0]['bound_rad'] = np.deg2rad(0.1)
     sorter_chain = sorter_chain_update(sorter_parameters)
     
-    for slot_number in range(len(tray.slots)):
-        if tray.slots_occupied()[slot_number]:  # TODO: Add check for cup not being full
+    if seq is None:
+        sequence = range(len(tray.slots))
+    else:
+        sequence = seq
+    
+    for slot_number in sequence:
+        if tray.slots_occupied()[slot_number]:  # TODO: Add check for cup not being full & matching materials
+            
+
             if slot_number == 8:
                 sorter_parameters[0]['bound_rad'] = bound_rad_initial
                 sorter_chain = sorter_chain_update(sorter_parameters)
+            
+            #IK_plot(tray.get_slot_cartesian(slot_number), cartesian_prev, sorter_parameters, sorter_chain)
+            if slot_number == purge_slot:
+                print("PURGING.......................................................................")
+                time.sleep(purge_time)
+            else:
+                print("FILLING CUP ", slot_number)
+            
             IK_plot(tray.get_slot_cartesian(slot_number), cartesian_prev, sorter_parameters, sorter_chain)
             cartesian_prev = tray.get_slot_cartesian(slot_number)
-        if purge_slot is not None:
-            IK_plot(tray.get_slot_cartesian(purge_slot), cartesian_prev, sorter_parameters, sorter_chain)
-            cartesian_prev = tray.get_slot_cartesian(purge_slot)
-    IK_plot(cartesian_initial, cartesian_prev, sorter_parameters, sorter_chain)
+            
+            if purge_slot is not None and seq is None:
+                print("PURGING.......................................................................")
+                time.sleep(purge_time)
+                
+                IK_plot(tray.get_slot_cartesian(purge_slot), cartesian_prev, sorter_parameters, sorter_chain)
+                cartesian_prev = tray.get_slot_cartesian(purge_slot)
+            
+    
+    
