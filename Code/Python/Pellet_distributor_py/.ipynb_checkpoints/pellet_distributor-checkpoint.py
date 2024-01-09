@@ -1,4 +1,4 @@
-#### PELLET SORTER SCRIPT
+#### PELLET DISTRIBUTOR SCRIPT
 ## Imports
 import numpy as np
 import math
@@ -16,7 +16,7 @@ import time
 
 
 
-### Pellet sorter functions
+### Pellet distributor functions
 ## Inverse kinematics
 def pol2car(rho, phi):
     """
@@ -71,57 +71,54 @@ def truncated_remainder(dividend, divisor):
     remainder = dividend - divisor * divided_number
     return remainder
 
-def sorter_chain_update(sorter_parameters):
+def distributor_chain_update(distributor_parameters):
     """
-    Creates an IKPy Chain instance using the input parameters for the pellet sorter robot.
+    Creates an IKPy Chain instance using the input parameters for the pellet distributor robot.
     Note that it currently ignores bounds in second joint
 
-    :param sorter_parameters: Dictionary containing for every motor:
+    :param distributor_parameters: Dictionary containing for every motor:
         Float/Int number of steps in a full revolution of the stepper motor
         Float gear ratio of the corresponding gear box
         Float length of the arm being rotated by the motor
         Float bound angle in radians such that the arm can only rotate within +-bound
         List [x, y] of floats of current cartesian coordinates of the end of the corresponding arm
         In the format: [{'steps_in_rotation':0,'gear_ratio':0,'length_mm':0,'bound_rad':0, 'cartesian':[0,0]} for k in range(n_joints)]
-    :return: Returns the Chain instance for the sroter
+    :return: Returns the Chain instance for the distributor
     """
-    sorter_chain = Chain(name='sorter', links=[
+    distributor_chain = Chain(name='distributor', links=[
     OriginLink(),
     URDFLink(
         name="Base",
-        bounds=(-sorter_parameters[0].get('bound_rad'),sorter_parameters[0].get('bound_rad')),
+        bounds=(-distributor_parameters[0].get('bound_rad'),distributor_parameters[0].get('bound_rad')),
         origin_translation=[0, 0, 0],
         origin_orientation=[0, 0, 0],
         rotation=[0, 0, 1],
     ),
     URDFLink(
         name="Elbow",
-        # bounds=(-sorter_parameters[1].get('bound_rad'),sorter_parameters[1].get('bound_rad')),
-        origin_translation=sorter_parameters[0].get('cartesian')+[0],
+        origin_translation=distributor_parameters[0].get('cartesian')+[0],
         origin_orientation=[0, 0, 1],
         rotation=[0, 0, 1],
     ),
     URDFLink(
         name="Tip",
-        origin_translation=sorter_parameters[1].get('cartesian')+[0],
+        origin_translation=distributor_parameters[1].get('cartesian')+[0],
         origin_orientation=[0, 0, 1],
         rotation=[0, 0, 0],
     ),
     ])
-    return sorter_chain
+    return distributor_chain
 
-def IK_difference(cartesian_target, cartesian_initial, sorter_parameters, sorter_chain):
+def IK_difference(cartesian_target, cartesian_initial, distributor_parameters, distributor_chain):
     """
-    Gives the angle difference in radians of each joint for the poses corresponding to the initial and target tip coordinates for the pellet sorter robot
+    Gives the angle difference in radians of each joint for the poses corresponding to the initial and target tip coordinates for the pellet distributor robot
 
-    :param cartesian_target: List [x, y] of floats corresponding to the target cartesian coordinates of the tip of the pellet sorter robot
-    :param cartesian_initial: List [x, y] of floats corresponding to the initial cartesian coordinates of the tip of the pellet sorter robot
+    :param cartesian_target: List [x, y] of floats corresponding to the target cartesian coordinates of the tip of the pellet distributor robot
+    :param cartesian_initial: List [x, y] of floats corresponding to the initial cartesian coordinates of the tip of the pellet distributor robot
     :return: List of floats of the angle difference for each joint, in radians
     """
-
-    #global sorter_chain
-    joint_target = sorter_chain.inverse_kinematics(cartesian_target+[0])
-    joint_initial = sorter_chain.inverse_kinematics(cartesian_initial+[0])
+    joint_target = distributor_chain.inverse_kinematics(cartesian_target+[0])
+    joint_initial = distributor_chain.inverse_kinematics(cartesian_initial+[0])
     return angles_to_pipi(joint_target[1:3]-joint_initial[1:3])
 
 def rad2steps(theta, steps_in_rotation):
@@ -135,39 +132,38 @@ def rad2steps(theta, steps_in_rotation):
 
     return (np.rint(theta*steps_in_rotation/(2*math.pi))).astype(int)
 
-def IK_steps(cartesian_target, cartesian_initial, sorter_parameters, sorter_chain):
+def IK_steps(cartesian_target, cartesian_initial, distributor_parameters, distributor_chain):
     """
-    Gives number of steps each stepper motor must take to go from initial to target tip coordinates in the pellet sorter robot
+    Gives number of steps each stepper motor must take to go from initial to target tip coordinates in the pellet distributor robot
 
-    :param cartesian_target: List [x, y] of floats corresponding to the target cartesian coordinates of the tip of the pellet sorter robot
-    :param cartesian_initial: List [x, y] of floats corresponding to the initial cartesian coordinates of the tip of the pellet sorter robot
-    :return: List [n1, n2] of int of the number of steps each stepper motor must take for the pellet sorter robot to go from initial to target tip coordinates
+    :param cartesian_target: List [x, y] of floats corresponding to the target cartesian coordinates of the tip of the pellet distributor robot
+    :param cartesian_initial: List [x, y] of floats corresponding to the initial cartesian coordinates of the tip of the pellet distributor robot
+    :return: List [n1, n2] of int of the number of steps each stepper motor must take for the pellet distributor robot to go from initial to target tip coordinates
     """
 
-    #global sorter_parameters
-    angle_difference = IK_difference(cartesian_target, cartesian_initial, sorter_parameters, sorter_chain)
-    steps = [0]*len(sorter_parameters)
-    for n in range(len(sorter_parameters)):
-        steps[n] = rad2steps(sorter_parameters[n].get('gear_ratio')*angle_difference[n], sorter_parameters[n].get('steps_in_rotation'))
+    angle_difference = IK_difference(cartesian_target, cartesian_initial, distributor_parameters, distributor_chain)
+    steps = [0]*len(distributor_parameters)
+    for n in range(len(distributor_parameters)):
+        steps[n] = rad2steps(distributor_parameters[n].get('gear_ratio')*angle_difference[n], distributor_parameters[n].get('steps_in_rotation'))
     return steps
 
-def IK_plot(cartesian_target, cartesian_initial, sorter_parameters, sorter_chain):
+def IK_plot(cartesian_target, cartesian_initial, distributor_parameters, distributor_chain):
     """
-    Plots the initial and target poses of the pellet sorter robot, given the tip coordinates, on the same plot
+    Plots the initial and target poses of the pellet distributor robot, given the tip coordinates, on the same plot
 
-    :param cartesian_target: List [x, y] of floats corresponding to the target cartesian coordinates of the tip of the pellet sorter robot
-    :param cartesian_initial: List [x, y] of floats corresponding to the initial cartesian coordinates of the tip of the pellet sorter robot
+    :param cartesian_target: List [x, y] of floats corresponding to the target cartesian coordinates of the tip of the pellet distributor robot
+    :param cartesian_initial: List [x, y] of floats corresponding to the initial cartesian coordinates of the tip of the pellet distributor robot
     """
 
     # %matplotlib inline
     fig, ax = plot_utils.init_3d_figure()
     ax.set_zlim(0, 1)
-    renamed_sorter_chain = sorter_chain
-    renamed_sorter_chain.name = 'Target'
-    renamed_sorter_chain.plot(sorter_chain.inverse_kinematics(cartesian_target+[0]), ax)
-    renamed_sorter_chain.name = 'Initial'
-    renamed_sorter_chain.plot(sorter_chain.inverse_kinematics(cartesian_initial+[0]), ax)
-    max_length = sum([sorter_parameters[n].get('length_mm') for n in range(len(sorter_parameters))])
+    renamed_distributor_chain = distributor_chain
+    renamed_distributor_chain.name = 'Target'
+    renamed_distributor_chain.plot(distributor_chain.inverse_kinematics(cartesian_target+[0]), ax)
+    renamed_distributor_chain.name = 'Initial'
+    renamed_distributor_chain.plot(distributor_chain.inverse_kinematics(cartesian_initial+[0]), ax)
+    max_length = sum([distributor_parameters[n].get('length_mm') for n in range(len(distributor_parameters))])
     plt.xlim(-max_length, max_length)
     plt.ylim(-max_length, max_length)
     plt.legend()
@@ -188,19 +184,19 @@ def runSteps(steps, arduino):
     message = str(steps[0]).zfill(number_len) + str(steps[1]).zfill(number_len)
     arduino.write(message.encode("utf-8"))
 
-def goToCartesianFrom(cartesian_target, cartesian_initial, sorter_parameters, sorter_chain, arduino):
+def goToCartesianFrom(cartesian_target, cartesian_initial, distributor_parameters, distributor_chain, arduino):
     """
-    Requests Arduino through serial to run necessary steps for pellet sorter robot cartesian tip coordinates to go from initial to target
+    Requests Arduino through serial to run necessary steps for pellet distributor robot cartesian tip coordinates to go from initial to target
 
-    :param cartesian_target: List [x, y] of floats corresponding to the target cartesian coordinates of the tip of the pellet sorter robot
-    :param cartesian_initial: List [x, y] of floats corresponding to the initial cartesian coordinates of the tip of the pellet sorter robot
+    :param cartesian_target: List [x, y] of floats corresponding to the target cartesian coordinates of the tip of the pellet distributor robot
+    :param cartesian_initial: List [x, y] of floats corresponding to the initial cartesian coordinates of the tip of the pellet distributor robot
     """
 
-    runSteps(IK_steps(cartesian_target, cartesian_initial, sorter_parameters, sorter_chain), arduino)
+    runSteps(IK_steps(cartesian_target, cartesian_initial, distributor_parameters, distributor_chain), arduino)
 
 def runValve(state, arduino):
     """
-    Requests Arduino through serial to open or close pellet sorter robot valve
+    Requests Arduino through serial to open or close pellet distributor robot valve
 
     :param state: Bool, true for open valve and false for close valve
     """
@@ -346,12 +342,12 @@ class TrayManager:
 
 
 ### Script definition
-def fill_tray(tray, sorter_parameters, arduino, balance, seq = None, purge_slot = None, purge_time = 0):
+def fill_tray(tray, distributor_parameters, arduino, balance, seq = None, purge_slot = None, purge_time = 0):
     """
     Function to fill the cups in the tray with the ammount of material previously defined. 
     
     :param tray: Object with the information about the tray and its cups
-    :param sorter_parameters: Object with information about the arm
+    :param distributor_parameters: Object with information about the arm
     :param arduino: serial connection to arduino
     :param balance: serial connection to balance
     :param seq: List with the order of filling of the cups. If None, they will all be filled in default order
@@ -361,17 +357,15 @@ def fill_tray(tray, sorter_parameters, arduino, balance, seq = None, purge_slot 
     
     """
     # Assumes valve starts closed
-    cartesian_initial = [sum([sorter_parameters[n].get('length_mm') for n in range(len(sorter_parameters))]), 0]
+    cartesian_initial = [sum([distributor_parameters[n].get('length_mm') for n in range(len(distributor_parameters))]), 0]
     cartesian_prev = cartesian_initial
-    #global sorter_parameters
-    #global sorter_chain
     
-    sorter_chain = ps.sorter_chain_update(sorter_parameters)
+    distributor_chain = ps.distributor_chain_update(distributor_parameters)
 
     # Bound is overridden for Inverse Kinematics to prioritize bottom joint over top joint rotation
-    bound_rad_initial = sorter_parameters[0]['bound_rad']
-    sorter_parameters[0]['bound_rad'] = np.deg2rad(0.1)
-    sorter_chain = sorter_chain_update(sorter_parameters)
+    bound_rad_initial = distributor_parameters[0]['bound_rad']
+    distributor_parameters[0]['bound_rad'] = np.deg2rad(0.1)
+    distributor_chain = distributor_chain_update(distributor_parameters)
     
     if seq is None:
         sequence = range(len(tray.slots))
@@ -384,11 +378,11 @@ def fill_tray(tray, sorter_parameters, arduino, balance, seq = None, purge_slot 
             
 
             if slot_number == 8:
-                sorter_parameters[0]['bound_rad'] = bound_rad_initial
-                sorter_chain = sorter_chain_update(sorter_parameters)
+                distributor_parameters[0]['bound_rad'] = bound_rad_initial
+                distributor_chain = distributor_chain_update(distributor_parameters)
             
-            IK_plot(tray.get_slot_cartesian(slot_number), cartesian_prev, sorter_parameters, sorter_chain)
-            goToCartesianFrom(tray.get_slot_cartesian(slot_number), cartesian_prev, sorter_parameters, sorter_chain, arduino)
+            IK_plot(tray.get_slot_cartesian(slot_number), cartesian_prev, distributor_parameters, distributor_chain)
+            goToCartesianFrom(tray.get_slot_cartesian(slot_number), cartesian_prev, distributor_parameters, distributor_chain, arduino)
             waitForSerialStr("pos finished", arduino)
             runValve(True, arduino)
             waitForSerialStr("val finished", arduino)
@@ -404,8 +398,8 @@ def fill_tray(tray, sorter_parameters, arduino, balance, seq = None, purge_slot 
             cartesian_prev = tray.get_slot_cartesian(slot_number)
             
             if purge_slot is not None and seq is None:
-                IK_plot(tray.get_slot_cartesian(purge_slot), cartesian_prev, sorter_parameters, sorter_chain)
-                goToCartesianFrom(tray.get_slot_cartesian(purge_slot), cartesian_prev, sorter_parameters, sorter_chain, arduino)
+                IK_plot(tray.get_slot_cartesian(purge_slot), cartesian_prev, distributor_parameters, distributor_chain)
+                goToCartesianFrom(tray.get_slot_cartesian(purge_slot), cartesian_prev, distributor_parameters, distributor_chain, arduino)
                 waitForSerialStr("pos finished", arduino)
                 runValve(True, arduino)
                 waitForSerialStr("val finished", arduino)
@@ -417,25 +411,23 @@ def fill_tray(tray, sorter_parameters, arduino, balance, seq = None, purge_slot 
                 waitForSerialStr("val finished", arduino)
                 cartesian_prev = tray.get_slot_cartesian(purge_slot)
             
-    IK_plot(cartesian_initial, cartesian_prev, sorter_parameters, sorter_chain)
-    goToCartesianFrom(cartesian_initial, cartesian_prev, sorter_parameters, sorter_chain, arduino)
+    IK_plot(cartesian_initial, cartesian_prev, distributor_parameters, distributor_chain)
+    goToCartesianFrom(cartesian_initial, cartesian_prev, distributor_parameters, distributor_chain, arduino)
     waitForSerialStr("pos finished", arduino)
 
 
-def fill_tray_SIMULATED(tray, sorter_parameters, seq = None, purge_slot = None, purge_time = 0):
+def fill_tray_SIMULATED(tray, distributor_parameters, seq = None, purge_slot = None, purge_time = 0):
     
     # Assumes valve starts closed
-    cartesian_initial = [sum([sorter_parameters[n].get('length_mm') for n in range(len(sorter_parameters))]), 0]
+    cartesian_initial = [sum([distributor_parameters[n].get('length_mm') for n in range(len(distributor_parameters))]), 0]
     cartesian_prev = cartesian_initial
-    #global sorter_parameters
-    #global sorter_chain
     
-    sorter_chain = sorter_chain_update(sorter_parameters)
+    distributor_chain = distributor_chain_update(distributor_parameters)
 
     # Bound is overridden for Inverse Kinematics to prioritize bottom joint over top joint rotation
-    bound_rad_initial = sorter_parameters[0]['bound_rad']
-    sorter_parameters[0]['bound_rad'] = np.deg2rad(0.1)
-    sorter_chain = sorter_chain_update(sorter_parameters)
+    bound_rad_initial = distributor_parameters[0]['bound_rad']
+    distributor_parameters[0]['bound_rad'] = np.deg2rad(0.1)
+    distributor_chain = distributor_chain_update(distributor_parameters)
     
     if seq is None:
         sequence = range(len(tray.slots))
@@ -447,24 +439,23 @@ def fill_tray_SIMULATED(tray, sorter_parameters, seq = None, purge_slot = None, 
             
 
             if slot_number == 8:
-                sorter_parameters[0]['bound_rad'] = bound_rad_initial
-                sorter_chain = sorter_chain_update(sorter_parameters)
+                distributor_parameters[0]['bound_rad'] = bound_rad_initial
+                distributor_chain = distributor_chain_update(distributor_parameters)
             
-            #IK_plot(tray.get_slot_cartesian(slot_number), cartesian_prev, sorter_parameters, sorter_chain)
             if slot_number == purge_slot:
                 print("PURGING.......................................................................")
                 time.sleep(purge_time)
             else:
                 print("FILLING CUP ", slot_number)
             
-            IK_plot(tray.get_slot_cartesian(slot_number), cartesian_prev, sorter_parameters, sorter_chain)
+            IK_plot(tray.get_slot_cartesian(slot_number), cartesian_prev, distributor_parameters, distributor_chain)
             cartesian_prev = tray.get_slot_cartesian(slot_number)
             
             if purge_slot is not None and seq is None:
                 print("PURGING.......................................................................")
                 time.sleep(purge_time)
                 
-                IK_plot(tray.get_slot_cartesian(purge_slot), cartesian_prev, sorter_parameters, sorter_chain)
+                IK_plot(tray.get_slot_cartesian(purge_slot), cartesian_prev, distributor_parameters, distributor_chain)
                 cartesian_prev = tray.get_slot_cartesian(purge_slot)
             
     
