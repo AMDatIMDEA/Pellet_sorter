@@ -1,7 +1,7 @@
-# Pellet Sorter
-CAD and Arduino/Python code files for the pellet sorter/collector robot
+# Pellet distributor
+CAD and Arduino/Python code files for the pellet distributor robot
 
-A tutorial for using the code is available as a [Notebook](Code/Python/Pellet_sorter_py/Example_using_pellet_sorter.ipynb)
+A tutorial for using the code is available as a [Notebook](Code/Python/Pellet_distributor_py/Example_using_pellet_distributor.ipynb)
 
 ⚠ All parts are designed to be printed, if possible, according to the specified [Cura settings](Resources/Ultimaker_S5_Cura_Config.curaprofile). These include:
 - Horizontal Expansion: -0.1 mm
@@ -9,7 +9,7 @@ A tutorial for using the code is available as a [Notebook](Code/Python/Pellet_so
 
 
 ## Introduction to the project & current state
-The pellet sorter robot is a double-jointed articulated tube designed for pellets to be distributed into a set of cups on a tray, with the aim of automating the output of the material production process:
+The pellet distributor robot is a double-jointed articulated tube designed for pellets to be distributed into a set of cups on a tray, with the aim of automating the output of the material production process:
 > Mixing of desired composition 🠚 Extrusion 🠚 Cooling 🠚 Pelletizing 🠚 **SORTING** ⇨ Transport to sample manufacture & experimentation
 
 The parts, designed in FreeCAD, are made mostly of PLA by 3D printing, together with 50mm diameter PVC pipe sections, and nuts and bolts for fastening. The robot, measuring 552x497x236mm, uses two stepper motors for positioning, one on its base and another closer to the end of the arm, allowing it to effectively sweep a truncated circular sector below the pelletizer that covers the entire area of a tray. A third stepper actuates the opening and closing of a butterfly valve.  The whole assembly is suspended beneath the pelletizer by two arms on the top funnel/hopper, inserted into aluminum railings just under where the pellets exit. These make their way through the first joint, the valve (if open), and through the second joint, before reaching the nozzle and dropping into a cup or being discarded. The tray holding the cups is set up on a scale, which enables the control of fill levels of cups, as well as determining the material yield.
@@ -54,15 +54,15 @@ And some less impactful TO-DOs:
 
 ## Useful links & references
 
-- [ ] [Arduino & Breadboard wiring diagram](https://github.com/AMDatIMDEA/Pellet_sorter/blob/3199d7dc5ab3ea5f197367ed4c28cb93c2f82943/Schematics/Electronics/Pellet%20Sorter%20Arduino%20and%20Driver%20Wiring%20Drawing%20Final%20Annotated.png)
+- [ ] [Arduino & Breadboard wiring diagram](https://github.com/AMDatIMDEA/Pellet_distributor/blob/3199d7dc5ab3ea5f197367ed4c28cb93c2f82943/Schematics/Electronics/Pellet%20Sorter%20Arduino%20and%20Driver%20Wiring%20Drawing%20Final%20Annotated.png)
 
 ### ⚡ Stepper Motors
 - [Arduino AccelStepper Class Reference](https://www.airspayce.com/mikem/arduino/AccelStepper/classAccelStepper.html)
 - [Arduino AccelStepper Examples](https://www.airspayce.com/mikem/arduino/AccelStepper/examples.html)
 - [A4988 Driver simplified guide](https://lastminuteengineers.com/a4988-stepper-motor-driver-arduino-tutorial/)
-- [ ] [Small stepper datasheet](https://github.com/AMDatIMDEA/Pellet_sorter/blob/d0cadbf57e2ab080da146999fbca15fec0f52def/Resources/Guides_and_Datasheets/290-028-1_ts-24byj48a-25-pxw%20Stepper.pdf)
-- [ ] [SX-NEMA17 Stepper datasheet](https://github.com/AMDatIMDEA/Pellet_sorter/blob/d0cadbf57e2ab080da146999fbca15fec0f52def/Resources/Guides_and_Datasheets/SX17%20NEMA17%20Stepper.pdf)
-- [ ] [A4998 Driver datasheet](https://github.com/AMDatIMDEA/Pellet_sorter/blob/d0cadbf57e2ab080da146999fbca15fec0f52def/Resources/Guides_and_Datasheets/A4988-%20Driver%20Datasheet.pdf)
+- [ ] [Small stepper datasheet](https://github.com/AMDatIMDEA/Pellet_distributor/blob/d0cadbf57e2ab080da146999fbca15fec0f52def/Resources/Guides_and_Datasheets/290-028-1_ts-24byj48a-25-pxw%20Stepper.pdf)
+- [ ] [SX-NEMA17 Stepper datasheet](https://github.com/AMDatIMDEA/Pellet_distributor/blob/d0cadbf57e2ab080da146999fbca15fec0f52def/Resources/Guides_and_Datasheets/SX17%20NEMA17%20Stepper.pdf)
+- [ ] [A4998 Driver datasheet](https://github.com/AMDatIMDEA/Pellet_distributor/blob/d0cadbf57e2ab080da146999fbca15fec0f52def/Resources/Guides_and_Datasheets/A4988-%20Driver%20Datasheet.pdf)
 
 ### 🔌 Serial port
 - [Arduino Serial functions](https://www.arduino.cc/reference/en/language/functions/communication/serial/)
@@ -73,12 +73,12 @@ And some less impactful TO-DOs:
 - [IKPy Documentation](https://ikpy.readthedocs.io/en/latest/ikpy.html)
 
 ### ⚖ Balance
-- [ ] [CPWplus Scale datasheet](https://github.com/AMDatIMDEA/Pellet_sorter/blob/d0cadbf57e2ab080da146999fbca15fec0f52def/Resources/Guides_and_Datasheets/CPWplus_UM_USA%20Scale.pdf)
+- [ ] [CPWplus Scale datasheet](https://github.com/AMDatIMDEA/Pellet_distributor/blob/d0cadbf57e2ab080da146999fbca15fec0f52def/Resources/Guides_and_Datasheets/CPWplus_UM_USA%20Scale.pdf)
 
 ### 🐢 TurtleBot
 - [TurtleBot 4 GitHub Hardware repo](https://github.com/turtlebot/turtlebot4-hardware/tree/master/TurtleBot%204/Components)
-- [ ] [TurtleBot 4 Integration Platform datasheet](https://github.com/AMDatIMDEA/Pellet_sorter/blob/c34230bc0438fd95317bfee5fad6f5a7074d98d1/Resources/Guides_and_Datasheets/TurtleBot%20Top%20Integration%20platform%20draft.pdf)
+- [ ] [TurtleBot 4 Integration Platform datasheet](https://github.com/AMDatIMDEA/Pellet_distributor/blob/c34230bc0438fd95317bfee5fad6f5a7074d98d1/Resources/Guides_and_Datasheets/TurtleBot%20Top%20Integration%20platform%20draft.pdf)
 
-![Pellet sorter rendering](Resources/Visuals/Renders/Pellet_sorter_Feature.png)
+![Pellet distributor rendering](Resources/Visuals/Renders/Pellet_distributor_Feature.png)
 
 [> Back to top](#TOP)
