@@ -1,5 +1,5 @@
 # Pellet distributor
-CAD and Arduino/Python code files for the pellet distributor robot
+CAD and Arduino/Python code files for the pellet distributor robot developed at the Accelerated Materials Discovery group from IMDEA Materials.
 
 A tutorial for using the code is available as a [Notebook](Code/Python/Pellet_distributor_py/Example_using_pellet_distributor.ipynb)
 
